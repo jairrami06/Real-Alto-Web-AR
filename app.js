@@ -369,10 +369,15 @@
       introScreen.setAttribute('hidden', 'hidden');
     }
 
-    if (scene && typeof scene.enterVR === 'function') {
-      scene.enterVR();
+    const mindarSystem = scene?.systems?.['mindar-image-system'];
+    if (mindarSystem && typeof mindarSystem.start === 'function') {
+      mindarSystem.start().catch((error) => {
+        updateTrackingState('No se pudo iniciar la camara. Revisa permisos.', 'pill pill-waiting');
+        console.error(error);
+      });
     }
 
+    updateTrackingState('Camara iniciada. Apunta al target.', 'pill');
     window.scrollTo(0, 0);
   }
 

@@ -24,6 +24,10 @@ html, body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+body {
+  overflow: hidden;
+}
+
 body.ar-active {
   background: #000;
 }
@@ -43,6 +47,13 @@ body::before {
   background-size: 34px 34px;
   mask-image: radial-gradient(circle at center, black 48%, transparent 100%);
   pointer-events: none;
+}
+
+a-scene {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
 }
 
 .shell {

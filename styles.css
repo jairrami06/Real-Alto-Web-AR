@@ -24,6 +24,10 @@ html, body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+body.ar-active {
+  background: #000;
+}
+
 body::before {
   content: "";
   position: fixed;
@@ -40,6 +44,47 @@ body::before {
   display: grid;
   gap: 1.5rem;
   padding: 2rem;
+}
+
+body.ar-active .shell {
+  display: none;
+}
+
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(215, 155, 86, 0.16), transparent 30%),
+    radial-gradient(circle at 80% 20%, rgba(240, 182, 109, 0.14), transparent 28%),
+    linear-gradient(180deg, rgba(10, 10, 10, 0.97), rgba(23, 18, 13, 0.95));
+}
+
+body.ar-active .intro-screen {
+  display: none;
+}
+
+.intro-card {
+  width: min(100%, 520px);
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(20, 16, 12, 0.86);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45);
+  text-align: left;
+}
+
+.intro-copy {
+  margin: 0.9rem 0 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.intro-button {
+  margin-top: 1.25rem;
 }
 
 .hero {
@@ -238,13 +283,24 @@ select {
   position: fixed;
   inset: 0;
   z-index: 0;
-  opacity: 0.08;
+  opacity: 0;
   pointer-events: none;
+  background: #000;
+}
+
+body.ar-active .viewer-shell {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 2;
 }
 
 .viewer-shell a-scene {
   width: 100%;
   height: 100%;
+}
+
+body.ar-active .viewer-shell a-scene {
+  min-height: 100vh;
 }
 
 @media (max-width: 960px) {
@@ -262,5 +318,9 @@ select {
 
   .viewer-shell {
     opacity: 0.03;
+  }
+
+  body.ar-active .viewer-shell {
+    opacity: 1;
   }
 }

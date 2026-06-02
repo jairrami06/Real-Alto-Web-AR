@@ -11,6 +11,8 @@
   const metricNodes = document.querySelector('#metric-nodes');
   const metricAssets = document.querySelector('#metric-assets');
   const metricTick = document.querySelector('#metric-tick');
+  const introScreen = document.querySelector('#intro-screen');
+  const enterExperienceButton = document.querySelector('#enter-experience');
 
   const graph = window.mapaMuseo || {};
   const graphEntries = Object.entries(graph);
@@ -357,6 +359,22 @@
     updateNodeIndicators();
     updateTrackingState('Esperando marcador', 'pill pill-waiting');
     loadNodeAssets('punto_0');
+  }
+
+  function enterExperience() {
+    document.body.classList.add('ar-active');
+
+    if (introScreen) {
+      introScreen.setAttribute('hidden', 'hidden');
+    }
+
+    if (scene && typeof scene.enterVR === 'function') {
+      scene.enterVR();
+    }
+  }
+
+  if (enterExperienceButton) {
+    enterExperienceButton.addEventListener('click', enterExperience);
   }
 
   scene.addEventListener('loaded', bootstrap);

@@ -28,6 +28,13 @@ body.ar-active {
   background: #000;
 }
 
+html.ar-active,
+body.ar-active {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
 body::before {
   content: "";
   position: fixed;
@@ -297,6 +304,12 @@ body.ar-active .viewer-shell {
 .viewer-shell a-scene {
   width: 100%;
   height: 100%;
+}
+
+body.ar-active .viewer-shell,
+body.ar-active .viewer-shell a-scene {
+  width: 100vw;
+  height: 100vh;
 }
 
 body.ar-active .viewer-shell a-scene {

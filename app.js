@@ -363,6 +363,7 @@
 
   function enterExperience() {
     document.body.classList.add('ar-active');
+    document.documentElement.classList.add('ar-active');
 
     if (introScreen) {
       introScreen.setAttribute('hidden', 'hidden');
@@ -371,6 +372,8 @@
     if (scene && typeof scene.enterVR === 'function') {
       scene.enterVR();
     }
+
+    window.scrollTo(0, 0);
   }
 
   if (enterExperienceButton) {

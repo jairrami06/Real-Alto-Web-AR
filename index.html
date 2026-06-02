@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1d1a17">
+  <title>Real Alto WebAR</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  <script src="./museumMap.js" defer></script>
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <p class="eyebrow">Museo Real Alto</p>
+      <h1>WebAR topologica para recorrido arqueologico</h1>
+      <p class="lede">
+        Prototipo cliente-side con carga dinamica por proximidad, rutas BFS y calibracion por Image Target.
+      </p>
+      <div class="status-bar">
+        <span id="tracking-status" class="pill pill-waiting">Esperando marcador</span>
+        <span id="node-status" class="pill">Nodo activo: --</span>
+        <span id="route-status" class="pill">Ruta: --</span>
+      </div>
+    </section>
+
+    <section class="dashboard">
+      <div class="panel panel-primary">
+        <div class="panel-head">
+          <h2>Destino</h2>
+          <p>Elige una estacion para calcular la ruta mas corta.</p>
+        </div>
+        <label class="field">
+          <span>Exhibicion objetivo</span>
+          <select id="destination-select"></select>
+        </label>
+        <div class="actions">
+          <button id="plan-route" class="button button-strong">Calcular ruta</button>
+          <button id="clear-route" class="button button-ghost">Limpiar ruta</button>
+        </div>
+        <div class="route-card">
+          <div class="route-card-title">Trayecto actual</div>
+          <ol id="route-list" class="route-list"></ol>
+        </div>
+      </div>
+
+      <div class="panel panel-secondary">
+        <div class="panel-head">
+          <h2>Estado del motor</h2>
+          <p>Monitoreo de proximidad y carga diferencial de assets.</p>
+        </div>
+        <div class="metric-grid">
+          <article>
+            <span class="metric-label">Nodos</span>
+            <strong id="metric-nodes">0</strong>
+          </article>
+          <article>
+            <span class="metric-label">Assets activos</span>
+            <strong id="metric-assets">0</strong>
+          </article>
+          <article>
+            <span class="metric-label">Ultima lectura</span>
+            <strong id="metric-tick">0 ms</strong>
+          </article>
+        </div>
+        <p class="microcopy">
+          El marcador Punto 0 define el origen local de la escena. Si no esta presente, el sistema permanece en espera.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <section class="viewer-shell" aria-label="Escena de realidad aumentada">
+    <a-scene
+      id="ar-scene"
+      mindar-image="imageTargetSrc: ./assets/targets/realalto-target.mind; autoStart: true; uiLoading: no; uiError: no; uiScanning: no"
+      vr-mode-ui="enabled: false"
+      renderer="colorManagement: true, physicallyCorrectLights: true"
+      device-orientation-permission-ui="enabled: false"
+      embedded
+    >
+      <a-assets>
+        <img id="calibration-ring" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Alfa_omega.svg/512px-Alfa_omega.svg.png" alt="calibration ring">
+      </a-assets>
+
+      <a-camera id="ar-camera" position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity id="origin-target" mindar-image-target="targetIndex: 0">
+        <a-plane
+          position="0 0 0"
+          rotation="-90 0 0"
+          width="0.8"
+          height="0.8"
+          material="src: #calibration-ring; transparent: true; opacity: 0.9"
+        ></a-plane>
+        <a-ring position="0 0.01 0" rotation="-90 0 0" radius-inner="0.12" radius-outer="0.18" material="color: #d8a25e; opacity: 0.85"></a-ring>
+      </a-entity>
+
+      <a-entity id="world-root" gestor-navegacion></a-entity>
+    </a-scene>
+  </section>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1d1a17">
+  <title>Real Alto WebAR</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  <script src="./museumMap.js" defer></script>
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <p class="eyebrow">Museo Real Alto</p>
+      <h1>WebAR topologica para recorrido arqueologico</h1>
+      <p class="lede">
+        Prototipo cliente-side con carga dinamica por proximidad, rutas BFS y calibracion por Image Target.
+      </p>
+      <div class="status-bar">
+        <span id="tracking-status" class="pill pill-waiting">Esperando marcador</span>
+        <span id="node-status" class="pill">Nodo activo: --</span>
+        <span id="route-status" class="pill">Ruta: --</span>
+      </div>
+    </section>
+
+    <section class="dashboard">
+      <div class="panel panel-primary">
+        <div class="panel-head">
+          <h2>Destino</h2>
+          <p>Elige una estacion para calcular la ruta mas corta.</p>
+        </div>
+        <label class="field">
+          <span>Exhibicion objetivo</span>
+          <select id="destination-select"></select>
+        </label>
+        <div class="actions">
+          <button id="plan-route" class="button button-strong">Calcular ruta</button>
+          <button id="clear-route" class="button button-ghost">Limpiar ruta</button>
+        </div>
+        <div class="route-card">
+          <div class="route-card-title">Trayecto actual</div>
+          <ol id="route-list" class="route-list"></ol>
+        </div>
+      </div>
+
+      <div class="panel panel-secondary">
+        <div class="panel-head">
+          <h2>Estado del motor</h2>
+          <p>Monitoreo de proximidad y carga diferencial de assets.</p>
+        </div>
+        <div class="metric-grid">
+          <article>
+            <span class="metric-label">Nodos</span>
+            <strong id="metric-nodes">0</strong>
+          </article>
+          <article>
+            <span class="metric-label">Assets activos</span>
+            <strong id="metric-assets">0</strong>
+          </article>
+          <article>
+            <span class="metric-label">Ultima lectura</span>
+            <strong id="metric-tick">0 ms</strong>
+          </article>
+        </div>
+        <p class="microcopy">
+          El marcador Punto 0 define el origen local de la escena. Si no esta presente, el sistema permanece en espera.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <section class="viewer-shell" aria-label="Escena de realidad aumentada">
+    <a-scene
+      id="ar-scene"
+      mindar-image="imageTargetSrc: ./assets/targets/realalto-target.mind; autoStart: true; uiLoading: no; uiError: no; uiScanning: no"
+      vr-mode-ui="enabled: false"
+      renderer="colorManagement: true, physicallyCorrectLights: true"
+      device-orientation-permission-ui="enabled: false"
+      embedded
+    >
+      <a-assets>
+        <img id="calibration-ring" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Alfa_omega.svg/512px-Alfa_omega.svg.png" alt="calibration ring">
+      </a-assets>
+
+      <a-camera id="ar-camera" position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity id="origin-target" mindar-image-target="targetIndex: 0">
+        <a-plane
+          position="0 0 0"
+          rotation="-90 0 0"
+          width="0.8"
+          height="0.8"
+          material="src: #calibration-ring; transparent: true; opacity: 0.9"
+        ></a-plane>
+        <a-ring position="0 0.01 0" rotation="-90 0 0" radius-inner="0.12" radius-outer="0.18" material="color: #d8a25e; opacity: 0.85"></a-ring>
+      </a-entity>
+
+      <a-entity id="world-root" gestor-navegacion></a-entity>
+    </a-scene>
+  </section>
+</body>
+</html>

@@ -13,6 +13,7 @@
   const metricTick = document.querySelector('#metric-tick');
   const introScreen = document.querySelector('#intro-screen');
   const enterExperienceButton = document.querySelector('#enter-experience');
+  const scanHintState = document.querySelector('#scan-hint-state');
 
   const graph = window.mapaMuseo || {};
   const graphEntries = Object.entries(graph);
@@ -102,6 +103,10 @@
   function updateTrackingState(text, className) {
     trackingStatus.textContent = text;
     trackingStatus.className = className;
+
+    if (scanHintState) {
+      scanHintState.textContent = text;
+    }
   }
 
   function updateNodeIndicators() {
@@ -346,7 +351,7 @@
 
     targetEntity.addEventListener('targetLost', () => {
       appState.originLocked = false;
-      updateTrackingState('Marcador perdido', 'pill pill-waiting');
+      updateTrackingState('Marcador no detectado', 'pill pill-waiting');
     });
   }
 
@@ -377,7 +382,7 @@
       });
     }
 
-    updateTrackingState('Camara iniciada. Apunta al target.', 'pill');
+    updateTrackingState('Escanee el marcador. Esperando deteccion.', 'pill pill-waiting');
     window.scrollTo(0, 0);
   }
 

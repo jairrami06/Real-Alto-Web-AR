@@ -22,6 +22,11 @@
   </section>
 
   <section class="viewer-shell" aria-label="Escena de realidad aumentada">
+    <div class="scan-hint" id="scan-hint" aria-live="polite">
+      <strong id="scan-hint-title">Escanee el marcador</strong>
+      <span id="scan-hint-state">No detectado</span>
+    </div>
+
     <a-scene
       id="ar-scene"
       mindar-image="imageTargetSrc: ./assets/targets/realalto-target.mind; autoStart: false; uiLoading: no; uiError: no; uiScanning: no"

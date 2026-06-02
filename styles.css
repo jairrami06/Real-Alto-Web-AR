@@ -94,6 +94,35 @@ body.ar-active .intro-screen {
   margin-top: 1.25rem;
 }
 
+.scan-hint {
+  position: fixed;
+  top: max(0.75rem, env(safe-area-inset-top));
+  left: max(0.75rem, env(safe-area-inset-left));
+  z-index: 4;
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.95rem;
+  background: rgba(10, 10, 10, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.32);
+}
+
+.scan-hint strong {
+  font-size: 0.92rem;
+}
+
+.scan-hint span {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+body.ar-active .scan-hint {
+  display: grid;
+}
+
 .hero {
   max-width: 68rem;
 }

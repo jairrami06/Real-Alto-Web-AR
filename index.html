@@ -2,8 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#1d1a17">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
   <title>Real Alto WebAR</title>
   <link rel="stylesheet" href="./styles.css">
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
@@ -12,41 +12,35 @@
   <script src="./app.js" defer></script>
 </head>
 <body>
-  <section class="intro-screen" id="intro-screen" aria-label="Pantalla introductoria">
-    <div class="intro-card">
-      <p class="eyebrow">Museo Real Alto</p>
-      <h1>Explora la experiencia WebAR</h1>
-      <p class="intro-copy">Activa la experiencia y apunta a la marca para ver las figuras sobre la camara, sin paneles encima.</p>
-      <button id="enter-experience" class="button button-strong intro-button" type="button">Iniciar experiencia</button>
-    </div>
-  </section>
+  <a-scene
+    id="ar-scene"
+    mindar-image="imageTargetSrc: ./assets/targets/realalto-target.mind; autoStart: true; uiLoading: no; uiError: no; uiScanning: no"
+    vr-mode-ui="enabled: false"
+    renderer="alpha: true; colorManagement: true; physicallyCorrectLights: true"
+    device-orientation-permission-ui="enabled: false"
+  >
+    <a-assets>
+      <a-asset-item id="welcome-model" src="./assets/models/welcome.glb"></a-asset-item>
+      <a-asset-item id="valdivia-model" src="./assets/models/valdivia.glb"></a-asset-item>
+      <a-asset-item id="excavacion-model" src="./assets/models/excavacion.glb"></a-asset-item>
+      <a-asset-item id="ceramica-model" src="./assets/models/ceramica.glb"></a-asset-item>
+      <a-asset-item id="marker-model" src="./assets/models/marker.glb"></a-asset-item>
+    </a-assets>
 
-  <section class="viewer-shell" aria-label="Escena de realidad aumentada">
-    <div class="scan-hint" id="scan-hint" aria-live="polite">
-      <strong id="scan-hint-title">Escanee el marcador</strong>
-      <span id="scan-hint-state">No detectado</span>
-    </div>
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <a-scene
-      id="ar-scene"
-      mindar-image="imageTargetSrc: ./assets/targets/realalto-target.mind; autoStart: false; uiLoading: no; uiError: no; uiScanning: no"
-      vr-mode-ui="enabled: false"
-      renderer="alpha: true; colorManagement: true; physicallyCorrectLights: true"
-      device-orientation-permission-ui="enabled: false"
-    >
-      <a-assets>
-        <img id="calibration-ring" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Alfa_omega.svg/512px-Alfa_omega.svg.png" alt="calibration ring">
-      </a-assets>
+    <a-entity id="origin-target" mindar-image-target="targetIndex: 0">
+      <a-plane position="0 0 0" rotation="0 0 0" width="0.9" height="0.9" material="color: #ffffff; transparent: true; opacity: 0.01"></a-plane>
+      <a-entity id="welcome-entity" gltf-model="#welcome-model" position="0 0 -0.1" rotation="0 0 0" scale="1 1 1"></a-entity>
+    </a-entity>
 
-      <a-camera id="ar-camera" position="0 0 0" look-controls="enabled: false"></a-camera>
-
-      <a-entity id="origin-target" mindar-image-target="targetIndex: 0">
-        <a-plane position="0 0 0" rotation="-90 0 0" width="0.8" height="0.8" material="src: #calibration-ring; transparent: true; opacity: 0.9"></a-plane>
-        <a-ring position="0 0.01 0" rotation="-90 0 0" radius-inner="0.12" radius-outer="0.18" material="color: #d8a25e; opacity: 0.85"></a-ring>
-      </a-entity>
-
-      <a-entity id="world-root" gestor-navegacion></a-entity>
-    </a-scene>
-  </section>
+    <a-entity id="museum-root">
+      <a-entity id="node-banner_bienvenida" gltf-model="#welcome-model" position="0 0 -2" rotation="0 0 0" scale="1 1 1"></a-entity>
+      <a-entity id="node-sala_valdivia" gltf-model="#valdivia-model" position="5.2 0 -12.4" rotation="0 45 0" scale="1.5 1.5 1.5"></a-entity>
+      <a-entity id="node-excavacion_b" gltf-model="#excavacion-model" position="12.4 0 -18.2" rotation="0 90 0" scale="1 1 1"></a-entity>
+      <a-entity id="node-sala_ceramica" gltf-model="#ceramica-model" position="-6.6 0 -9.3" rotation="0 180 0" scale="1.3 1.3 1.3"></a-entity>
+      <a-entity id="node-mirador_conchales" gltf-model="#marker-model" position="18.1 0 -24" rotation="0 0 0" scale="1 1 1"></a-entity>
+    </a-entity>
+  </a-scene>
 </body>
 </html>

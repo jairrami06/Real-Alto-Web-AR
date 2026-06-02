@@ -40,13 +40,7 @@ body.ar-active {
 }
 
 body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 34px 34px;
-  mask-image: radial-gradient(circle at center, black 48%, transparent 100%);
-  pointer-events: none;
+  content: none;
 }
 
 a-scene {
@@ -117,7 +111,6 @@ body.ar-active .intro-screen {
   background: rgba(10, 10, 10, 0.72);
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: var(--text);
-  backdrop-filter: blur(12px);
   box-shadow: 0 14px 40px rgba(0, 0, 0, 0.32);
 }
 
